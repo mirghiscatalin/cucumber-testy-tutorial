@@ -11,6 +11,10 @@ import org.slf4j.LoggerFactory;
 public class LoginPage {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginPage.class);
 
+    private WebElement email;
+
+    private WebElement password;
+
     @FindBy(how = How.ID, using = "email")
     private WebElement emailEl;
 
@@ -23,5 +27,11 @@ public class LoginPage {
 
     public void clickOnLoginButton() {
         loginButton.click();
+    }
+
+    public void enterValidCredentials(String emailValue, String passValue) {
+
+        email.sendKeys(emailValue);
+        password.sendKeys(passValue);
     }
 }
