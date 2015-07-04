@@ -1,11 +1,13 @@
 package org.fasttrackit.workshop.login;
 
+import com.sdl.selenium.web.WebLocator;
 import com.sdl.selenium.web.utils.Utils;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.fasttrackit.util.TestBase;
 import org.fasttrackit.util.TestBaseNative;
 import org.fasttrackit.workshop.pagefactory.login.LoginPage;
 import org.openqa.selenium.By;
@@ -17,19 +19,11 @@ import org.slf4j.LoggerFactory;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class LoginSteps extends TestBaseNative {
+public class LoginSteps extends TestBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginSteps.class);
 
-    LoginPage loginPage = new LoginPage();
+    private LoginView loginView = new LoginView();
 
-    public LoginSteps() {
-        initPage();
-    }
-
-    public void initPage() {
-        loginPage = PageFactory.
-                initElements(driver, LoginPage.class);
-    }
 
     @Given("^I access the login page$")
     public void I_access_the_login_page() {
@@ -43,7 +37,7 @@ public class LoginSteps extends TestBaseNative {
 
     @When("^I click login button$")
     public void I_click_login_button() {
-        loginPage.clickOnLoginButton();
+        loginView.clickOnLoginButton();
     }
 
 
@@ -69,9 +63,11 @@ public class LoginSteps extends TestBaseNative {
     }
 
     private void errorMessageShouldBePresent(String expectedMessage) {
-        WebElement error = driver.findElement(By.className("error-msg"));
-        assertThat(error.getText(), is(expectedMessage));
+        WebLocator error = loginView.getWebElement();
+        assertThat(error.getHtmlText(), is(expectedMessage));
     }
+
+
 
     @When("^I enter \"([^\"]*)\"/\"([^\"]*)\" credentials$")
     public void I_enter_credentials(String emailValue, String passValue) {
@@ -79,11 +75,7 @@ public class LoginSteps extends TestBaseNative {
     }
 
     public void enterValidCredentials(String emailValue, String passValue) {
-        WebElement email = driver.findElement(By.id("email"));
-    email.sendKeys(emailValue);
-
-    WebElement password = driver.findElement(By.id("password"));
-    password.sendKeys(passValue);
+      loginView.enterValidCredentials(emailValue, passValue);
 }
 
     @Then("^I expect \"([^\"]*)\" error message$")

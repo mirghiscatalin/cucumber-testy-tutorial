@@ -21,6 +21,9 @@ public class LoginPage {
     @FindBy (how = How.ID, using = "loginButton")
     private WebElement loginButton;
 
+    @FindBy (how = How.CLASS_NAME, using = "error-msg")
+    private WebElement error;
+
     public void enterEmail(String email) {
         emailEl.sendKeys(email);
     }
@@ -33,5 +36,9 @@ public class LoginPage {
 
         email.sendKeys(emailValue);
         password.sendKeys(passValue);
+    }
+
+    public WebElement getWebElement() {
+        return error;
     }
 }
